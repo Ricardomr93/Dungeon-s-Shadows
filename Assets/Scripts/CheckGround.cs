@@ -11,16 +11,16 @@ public class CheckGround : MonoBehaviour
     {
         if (collision.CompareTag("Ground"))
         {
-            
             jumping = false;
-            Debug.Log("entra al suelo");
             anim.SetBool("Falling", false);
         }
         
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        jumping = true;
-        Debug.Log("sale de suelo");
+        if (collision.CompareTag("Ground"))
+        {
+            jumping = true;
+        }
     }
 }
