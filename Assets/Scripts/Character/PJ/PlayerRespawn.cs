@@ -22,14 +22,16 @@ public class PlayerRespawn : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !pjScripit.Dead)
         {
-            Debug.Log("Entra en trigger");
             PlayerDamage();
         }
     }
     public void PlayerDamage()
     {
         PJ.transform.position = (new Vector2(positionRespawn.position.x, positionRespawn.position.y));
-        pjanimator.Play("PlayerRespawn");
-        pjScripit.Lives --;
+        pjScripit.Lives--;
+        if (pjScripit.Lives>0)
+        {
+            pjanimator.Play("PlayerRespawn");
+        }
     }
 }

@@ -11,7 +11,6 @@ public class CheckGround : MonoBehaviour
     {
         if (collision.CompareTag("Ground"))
         {
-            Debug.Log("Entra Trigger");
             jumping = false;
             anim.SetBool("Falling", false);
             anim.SetBool("Jump", false);

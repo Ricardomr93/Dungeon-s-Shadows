@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,12 +20,8 @@ public class Item : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<Collider2D>().enabled = false;
-            audioSource.Play();
-            Invoke("DesItem", audioSource.clip.length);
+            AudioManager.PlayPotionCollectedAudio();
+            Destroy(gameObject, 0.2f);
         }
-    }
-    private void DesItem()
-    {
-        Destroy(gameObject, 0.2f);
     }
 }

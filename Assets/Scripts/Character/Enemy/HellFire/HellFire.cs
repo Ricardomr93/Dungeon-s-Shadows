@@ -10,13 +10,20 @@ public class HellFire : MonoBehaviour
     public Animator anim;
     public Transform positionFire;
     private bool dead;
+    private int myVar;
+
+    public bool Dead
+    {
+        get { return dead; }
+        set { dead = value; }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         waitTime = waitTimeToAttack;
         dead = false;
     }
-    public bool Dead { get; set; }
     // Update is called once per frame
     void Update()
     {

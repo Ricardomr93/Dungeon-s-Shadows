@@ -22,17 +22,12 @@ public class StartEnd : MonoBehaviour
         start = false;
         end = false;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Debug.Log("Start: " + start + " end: " + end);
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!start && !end)
         {
             animGround.Play("HideGround");
+            AudioManager.PlayGroundMove();
             start = true;
             Invoke("Destroy", 6);
         }else if (start && end)
