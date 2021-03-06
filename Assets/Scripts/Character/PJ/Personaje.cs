@@ -38,7 +38,6 @@ public class Personaje : MonoBehaviour
     private bool recovering;
     private bool direRig;
     private bool wakeUp;
-    private AudioSource pjAudioSource;
     //private float horizMove = 0;
     //private float vertMove = 0;
     //public Joystick joystick;
@@ -48,12 +47,10 @@ public class Personaje : MonoBehaviour
     public Animator animator;
     public Collider2D[] attackCol;
     public float timeDontDamage = 1.3f;
-
-    //public AudioSource swordSource;
     // Start is called before the first frame update
     void Start()
     {
-        lives = 5;
+        lives = 3;
         dead = false;
         rb2d = GetComponent<Rigidbody2D>();
         attackCol[0].enabled = false;
@@ -120,11 +117,6 @@ public class Personaje : MonoBehaviour
         }
 
     }
-    private void FixedUpdate()
-    {
-        
-
-    }
     private void Damage_again()
     {
         damage = true;
@@ -135,25 +127,25 @@ public class Personaje : MonoBehaviour
         if (collision.gameObject.CompareTag("Respawn") && damage && !dead)
         {
             damage = false;
-            //tiempo hasta que invoca el daño otra vez
             Invoke("Damage_again", timeDontDamage);
-            //pjAudioSource.Play();  
+            AudioManager.PlayRespawnAudio();
         }
         if (collision.gameObject.CompareTag("Enemy") && damage && !dead)
         {
             damage = false;
             lives--;
             Invoke("Damage_again", timeDontDamage);
-            animator.Play("PJ_Hit");
-            // pjAudioSource.clip = hitClip;
+            AudioManager.PlayHitAudio();
         }
         Debug.Log("NUMERO DE VIDAS: " + lives);
 
     }
     private void CompruebaMuerto()
     {
-        if (lives <= 0 && !CheckGround.jumping)//si no tiene vidas y no está en el aire
+        if (lives <= 0 && !CheckGround.jumping && !dead)//si no tiene vidas y no está en el aire
         {
+            Debug.Log("Entra en muerto");
+            AudioManager.PlayDeadAudio();
             animator.SetBool("Dead", true);
             dead = true;
         }
@@ -163,15 +155,16 @@ public class Personaje : MonoBehaviour
         rb2d.velocity = new Vector2(dire, rb2d.velocity.y);
         pj.GetComponent<SpriteRenderer>().flipX = flip;
         animator.SetBool("Run", true);
+        if (!CheckGround.jumping)
+        {
+            AudioManager.PlayRunAudio();
+        }
     }
     public void Jump()
     {
-        if (!dead)
-        {
-            CheckGround.jumping = true;
-            rb2d.AddForce(new Vector2(0f, velPlayerJump), ForceMode2D.Impulse);
-            // rb2d.velocity = new Vector2(rb2d.velocity.x, velPlayerJump);
-        }
+        CheckGround.jumping = true;
+        rb2d.AddForce(new Vector2(0f, velPlayerJump), ForceMode2D.Impulse);
+        AudioManager.PlayJumpAudio();
     }
     public void Attack()
     {
