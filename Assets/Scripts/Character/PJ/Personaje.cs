@@ -37,6 +37,7 @@ public class Personaje : MonoBehaviour
     private bool attacking;
     private bool recovering;
     private bool direRig;
+    private bool wakeUp;
     private AudioSource pjAudioSource;
     //private float horizMove = 0;
     //private float vertMove = 0;
@@ -57,7 +58,6 @@ public class Personaje : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         attackCol[0].enabled = false;
         attackCol[1].enabled = false;
-        Debug.Log("NUMERO DE VIDAS: " + lives);
         Damage = true;
     }
 
@@ -69,6 +69,26 @@ public class Personaje : MonoBehaviour
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         attacking = stateInfo.IsName("PJ_Attack");
         recovering = stateInfo.IsName("PlayerRespawn");
+        wakeUp = stateInfo.IsName("WakeUp");
+        if (Input.GetKey(KeyCode.A) && !dead && !recovering && !wakeUp)
+        {
+            Run(-velPlayer, true);
+            direRig = false;
+        }
+        else if (Input.GetKey(KeyCode.D) && !dead && !recovering && !wakeUp)
+        {
+            Run(velPlayer, false);
+            direRig = true;
+        }
+        else
+        {
+            animator.SetBool("Run", false);
+        }
+        if (Input.GetKeyDown(KeyCode.W) && !CheckGround.jumping && !dead && !recovering && !wakeUp)
+        {
+            Jump();
+            animator.SetBool("Jump", true);
+        }
         if (attacking)
         {
             if (direRig)
@@ -94,32 +114,15 @@ public class Personaje : MonoBehaviour
             animator.SetBool("Falling", false);
         }
         CompruebaMuerto();
-        animator.SetBool("Jump", CheckGround.jumping);
-        if (Input.GetKeyDown(KeyCode.Space) && !attacking && !recovering)
+        if (Input.GetKeyDown(KeyCode.Space) && !attacking && !recovering && !wakeUp)
         {
             Attack();
         }
+
     }
     private void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.A) && !dead && !recovering)
-        {
-            Run(-velPlayer, true);
-            direRig = false;
-        }
-        else if (Input.GetKey(KeyCode.D) && !dead && !recovering)
-        {
-            Run(velPlayer, false);
-            direRig = true;
-        }
-        else
-        {
-            animator.SetBool("Run", false);
-        }
-        if (Input.GetKey(KeyCode.W) && !CheckGround.jumping && !dead && !recovering)
-        {
-            Jump();
-        }
+        
 
     }
     private void Damage_again()
@@ -128,6 +131,7 @@ public class Personaje : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.CompareTag("Potion") && !dead) lives++;
         if (collision.gameObject.CompareTag("Respawn") && damage && !dead)
         {
             damage = false;
@@ -164,6 +168,7 @@ public class Personaje : MonoBehaviour
     {
         if (!dead)
         {
+            CheckGround.jumping = true;
             rb2d.AddForce(new Vector2(0f, velPlayerJump), ForceMode2D.Impulse);
             // rb2d.velocity = new Vector2(rb2d.velocity.x, velPlayerJump);
         }

@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - DestroyPlayer
   - Attack
+  - Potion
   layers:
   - Default
   - TransparentFX

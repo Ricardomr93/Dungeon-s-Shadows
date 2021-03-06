@@ -25,6 +25,6 @@ public class EnemyAttacked : MonoBehaviour
     private void Destroy_Enemy()
     {
         enemy.SetActive(false);
-        Destroy(enemy);
+        Destroy(enemy,.4f);
     }
 }

@@ -17,11 +17,8 @@ public class HellBurn : MonoBehaviour
     }
     private void PatronBurn()
     {      
-        Debug.Log("Entra en waitTime");
         if (cont == 0)
         {
-            Debug.Log("entra Patron 0");
-            Debug.Log("Burn 0" + numBurn);
             anim[numBurn].Play("Burn");
             numBurn++;
             if (numBurn == 2)
@@ -31,8 +28,6 @@ public class HellBurn : MonoBehaviour
         }
         else if (cont == 1)
         {
-            Debug.Log("entra Patron 1");
-            Debug.Log("Burn 1" + numBurn);
             anim[numBurn].Play("Burn");
             numBurn--;
             if (numBurn == 0)
@@ -42,7 +37,6 @@ public class HellBurn : MonoBehaviour
         }
         else
         {
-            Debug.Log("entra Patron 2");
             anim[0].Play("Burn");
             anim[2].Play("Burn");
             cont = 0;
