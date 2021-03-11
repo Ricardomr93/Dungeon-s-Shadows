@@ -11,35 +11,19 @@ public class Lever : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        anim.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hasPlayer && Input.GetKeyDown(KeyCode.E))
-        {
-            if (anim != null)
-            {
-                anim.Play("Lever");
-                anim.enabled = true;
-            }
-        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            hasPlayer = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            hasPlayer = false;
+            anim.Play("Lever");
         }
     }
 }

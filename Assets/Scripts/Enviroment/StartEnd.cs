@@ -15,12 +15,16 @@ public class StartEnd : MonoBehaviour
         get { return end; }
         set { end = value; }
     }
-
+    private void Update()
+    {
+        Debug.Log("Star " + start + " End " + end);
+    }
     // Start is called before the first frame update
     void Start()
     {
         start = false;
         end = false;
+        
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -30,13 +34,19 @@ public class StartEnd : MonoBehaviour
             AudioManager.PlayGroundMove();
             start = true;
         }else if (start && end)
-        {
+        {   
+            GameManager.PlayerWon();
             pjAnim.Play("UpStairs");
-            Invoke("NextLevel", pjAnim.GetCurrentAnimatorStateInfo(0).length);
+            Invoke("NextLevel", pjAnim.GetCurrentAnimatorStateInfo(0).length+1);
+        }else if (!start && end)
+        {
+            GameManager.PlayerWon();
+            NextLevel();
         }
     }
     private void NextLevel()
     {
-        SceneManager.LoadScene("Level2");
+        GameManager.PlayerNextScene();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 }

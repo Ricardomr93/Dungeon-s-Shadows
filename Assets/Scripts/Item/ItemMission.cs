@@ -18,12 +18,15 @@ public class ItemMission : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && gameObject.CompareTag("Key"))
         {
-            startEnd.End = true;
             GameManager.PlayerColletedItemMission(this);
             gameObject.SetActive(false);
             Destroy(gameObject, 1.5f);
+        }
+        else if(collision.gameObject.CompareTag("Player"))
+        {
+            GameManager.PlayerColletedItemMission(this);
         }
     }
 }
