@@ -5,15 +5,7 @@ using UnityEngine;
 public class Personaje : MonoBehaviour
 {
     //atributos propios del pj
-    private int lives;
-    private bool dead;
-    private Rigidbody2D rb2d;
     private bool damage;
-    public int Lives
-    {
-        get { return lives; }
-        set { lives = value; }
-    }
 
     public bool Damage
     {
@@ -21,43 +13,17 @@ public class Personaje : MonoBehaviour
         set { damage = value; }
     }
 
-    public bool Dead
-    {
-        get { return dead; }
-        set { dead = value; }
-    }
-
-    public float velPlayer = 1;
-    public float velPlayerJump = 2.9f;
-    public float fallMultipler;
-    public float lowMultipler;
-    public float jumpHoldDuration = .1f;
-    private bool movRig;
-    private bool movLef;
-    private bool attacking;
+    private bool hitting;
     private bool recovering;
-    private bool direRig;
-    private bool wakeUp;
-    private AudioSource pjAudioSource;
     //private float horizMove = 0;
     //private float vertMove = 0;
     //public Joystick joystick;
-    public float runSpeedHorizontal;
-    public float runSpeedVertical;
-    public GameObject pj;
     public Animator animator;
     public Collider2D[] attackCol;
     public float timeDontDamage = 1.3f;
-
-    //public AudioSource swordSource;
     // Start is called before the first frame update
     void Start()
     {
-        lives = 5;
-        dead = false;
-        rb2d = GetComponent<Rigidbody2D>();
-        attackCol[0].enabled = false;
-        attackCol[1].enabled = false;
         Damage = true;
     }
 
@@ -67,110 +33,39 @@ public class Personaje : MonoBehaviour
         // horizMove = joystick.Horizontal * runSpeedHorizontal;
         // vertMove = joystick.Vertical * runSpeedVertical;
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        attacking = stateInfo.IsName("PJ_Attack");
         recovering = stateInfo.IsName("PlayerRespawn");
-        wakeUp = stateInfo.IsName("WakeUp");
-        if (Input.GetKey(KeyCode.A) && !dead && !recovering && !wakeUp)
-        {
-            Run(-velPlayer, true);
-            direRig = false;
-        }
-        else if (Input.GetKey(KeyCode.D) && !dead && !recovering && !wakeUp)
-        {
-            Run(velPlayer, false);
-            direRig = true;
-        }
-        else
-        {
-            animator.SetBool("Run", false);
-        }
-        if (Input.GetKeyDown(KeyCode.W) && !CheckGround.jumping && !dead && !recovering && !wakeUp)
-        {
-            Jump();
-            animator.SetBool("Jump", true);
-        }
-        if (attacking)
-        {
-            if (direRig)
-            {
-                attackCol[0].enabled = true;
-            }
-            else
-            {
-                attackCol[1].enabled = true;
-            }
-        }
-        else
-        {
-            attackCol[0].enabled = false;
-            attackCol[1].enabled = false;
-        }
-        if (rb2d.velocity.y < 0 && CheckGround.jumping)
-        {
-            animator.SetBool("Falling", true);
-        }
-        else if (rb2d.velocity.y > 0)
-        {
-            animator.SetBool("Falling", false);
-        }
+        hitting = stateInfo.IsName("PJ_Hit");
         CompruebaMuerto();
-        if (Input.GetKeyDown(KeyCode.Space) && !attacking && !recovering && !wakeUp)
+        if (recovering || hitting)
         {
-            Attack();
+            damage = false;
         }
-
-    }
-    private void FixedUpdate()
-    {
-        
-
-    }
-    private void Damage_again()
-    {
-        damage = true;
+        else
+        {
+            damage = true;
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Potion") && !dead) lives++;
-        if (collision.gameObject.CompareTag("Respawn") && damage && !dead)
+        if (collision.gameObject.CompareTag("Potion"))GameManager.PlayerUpLives();
+        if (collision.gameObject.CompareTag("Respawn"))
         {
-            damage = false;
-            //tiempo hasta que invoca el daño otra vez
-            Invoke("Damage_again", timeDontDamage);
-            //pjAudioSource.Play();  
+            AudioManager.PlayRespawnAudio();
         }
-        if (collision.gameObject.CompareTag("Enemy") && damage && !dead)
+        if (collision.gameObject.CompareTag("Enemy") && damage && !GameManager.PlayerDied())
         {
-            damage = false;
-            lives--;
-            Invoke("Damage_again", timeDontDamage);
+            GameManager.PlayerHit();
             animator.Play("PJ_Hit");
-            // pjAudioSource.clip = hitClip;
+            Invoke("Damage_again", timeDontDamage);
         }
-        Debug.Log("NUMERO DE VIDAS: " + lives);
-
     }
     private void CompruebaMuerto()
     {
-        if (lives <= 0 && !CheckGround.jumping)//si no tiene vidas y no está en el aire
+        Debug.Log(GameManager.PlayerDied());
+        if (GameManager.PlayerDied())//si no tiene vidas y no está en el aire
         {
-            animator.SetBool("Dead", true);
-            dead = true;
-        }
-    }
-    private void Run(float dire, bool flip)
-    {
-        rb2d.velocity = new Vector2(dire, rb2d.velocity.y);
-        pj.GetComponent<SpriteRenderer>().flipX = flip;
-        animator.SetBool("Run", true);
-    }
-    public void Jump()
-    {
-        if (!dead)
-        {
-            CheckGround.jumping = true;
-            rb2d.AddForce(new Vector2(0f, velPlayerJump), ForceMode2D.Impulse);
-            // rb2d.velocity = new Vector2(rb2d.velocity.x, velPlayerJump);
+            Debug.Log("Entra en muerto");
+            animator.Play("PJ_Dead");
         }
     }
     public void Attack()

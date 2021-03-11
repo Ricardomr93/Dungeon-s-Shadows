@@ -12,6 +12,7 @@ TagManager:
   - Platform
   - Bounds
   - Lever
+  - Key
   layers:
   - Default
   - TransparentFX
