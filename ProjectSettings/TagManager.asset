@@ -25,8 +25,8 @@ TagManager:
   - BackGround
   - Platforms
   - Player
-  - 
-  - 
+  - CityItems
+  - CementeryItems
   - 
   - 
   - 
@@ -50,6 +50,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: CementeryItems
+    uniqueID: 826162449
+    locked: 0
   - name: Background
     uniqueID: 4046572937
     locked: 0
@@ -61,4 +64,7 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 3550615327
+    locked: 0
+  - name: CityItems
+    uniqueID: 2115349731
     locked: 0
