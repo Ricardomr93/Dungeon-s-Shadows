@@ -6,7 +6,7 @@ public class PlayerAnimations : MonoBehaviour
 {
     PlayerMovement movement;
     Animator anim;
-    Rigidbody2D rigidbody;
+    Rigidbody2D rigidBody;
     PlayerInput input;
 
     int speedParamID;
@@ -22,11 +22,11 @@ public class PlayerAnimations : MonoBehaviour
         Transform parent = transform.parent;
 
         movement = parent.GetComponent<PlayerMovement>();
-        rigidbody = parent.GetComponent<Rigidbody2D>();
+        rigidBody = parent.GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         input = parent.GetComponent<PlayerInput>();
 
-        if (movement == null || rigidbody == null || anim == null || input == null)
+        if (movement == null || rigidBody == null || anim == null || input == null)
         {
             Debug.LogError("Falta poner alguno de los componentes en PlayerAnimations");
             Destroy(this);
@@ -35,7 +35,7 @@ public class PlayerAnimations : MonoBehaviour
     void Update()
     {
         anim.SetBool(groundParamID, movement.isGround);
-        anim.SetFloat(fallParamID, rigidbody.velocity.y);
+        anim.SetFloat(fallParamID, rigidBody.velocity.y);
         anim.SetFloat(speedParamID, Mathf.Abs(input.horizontal));
     }
     public void StepAudio()

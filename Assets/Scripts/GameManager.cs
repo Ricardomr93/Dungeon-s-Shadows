@@ -2,35 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public Text vidasTxt;
     static GameManager current;
     private int lives;
     private bool gameOver;
     private bool dead;
+    private bool respawn;
     private List<ItemMission> items;
     public StartEnd startEnd;
     //SceneFader sceneFader; TODO->
-    private void Start()
-    {
-        lives = 3;
-        dead = false;
-    }
+
     private void Awake()
     {
+
         if (current != null && current != this)
         {
             Destroy(gameObject);
             return;
         }
+        lives = 3;
+        dead = false;
+        Debug.Log(dead);
         current = this;
         items = new List<ItemMission>();
         DontDestroyOnLoad(gameObject);
+        current.vidasTxt.text = "x " + current.lives;
     }
     private void Update()
     {
-        Debug.Log("Vidas" + lives);
         if (gameOver) return;
     }
     public static bool IsDead()
@@ -55,6 +58,7 @@ public class GameManager : MonoBehaviour
         if (!current.items.Contains(item))
         {
             current.items.Add(item);
+            Debug.Log(current.items.Count);
         }
 
         //UIManager.UpdateItemsUI(current.items.Count); TODO ->
@@ -69,15 +73,21 @@ public class GameManager : MonoBehaviour
         {
             AudioManager.PlayKeyAudio();
         }
-        if (current.items.Count == 0) current.startEnd.End = true;
+        if (current.items.Count == 0)
+        {
+            Debug.Log("Puede ir para terminar");
+            current.startEnd.End = true;
+        }
         //UIManager.UpdateItemsUI(current.items.Count); TODO ->
     }
     public static void PlayerHit()
     {
         if (current == null) return;
         current.lives--;
+        current.vidasTxt.text = "x " + current.lives;
         AudioManager.PlayHitAudio();
         PlayerDied();
+        
         //UImanager.UpdateLivesUI(current.lives); ->
     }
     public static void PlayerUpLives()
@@ -95,13 +105,30 @@ public class GameManager : MonoBehaviour
         }
         return current.dead;
     }
-    void RestartScene()
+    public static void RestartScene()
     {
-        items.Clear();
+        current.items.Clear();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public static void PlayerWon()
     {
         current.gameOver = true;
+    }
+    public static void PlayerNextScene()
+    {
+        current.gameOver = false;
+    }
+    public static bool IsRespawn()
+    {
+        if (current == null) return false;
+        return current.respawn;
+    }
+    public static void RespawnTrue()
+    {
+        current.respawn = true;
+    }
+    public static void RespawnFalse()
+    {
+        current.respawn = false;
     }
 }

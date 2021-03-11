@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Move Properties")]
     public float speed = 1;
     public float coyoteDuration = .05f;
-    public float maxFallSpeed = -25f;
+    public float maxFallSpeed = -2.5f;
     
     [Header("Jump Properties")]
     public float jumpForce = 3f;             //fuerza inicial
@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     PlayerInput input;
-    Rigidbody2D rigidbody;
+    Rigidbody2D rigidBody;
     BoxCollider2D bodyCollider;
     Collider2D attack;
     Animator anim;
@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         input = GetComponent<PlayerInput>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
         bodyCollider = GetComponent<BoxCollider2D>();
         anim = gameObject.transform.GetChild(0).GetComponent<Animator>();
         origXScale = transform.localScale.x;
@@ -89,10 +89,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 isGround = false;
                 isJumping = true;
-                //anim.SetBool("Jump", true);
                 //guardamos la variable para ver cuanto vamos a permitir que se salte
                 jumpTime = Time.time + jumpHoldDuration;
-                rigidbody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+                rigidBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
                 AudioManager.PlayJumpAudio();
             }
 
@@ -100,10 +99,10 @@ public class PlayerMovement : MonoBehaviour
         else if (isJumping)
         {
             //si sigue presionando le damos un poco mas de impulso para que suba un poco mas
-            if (input.jumpHeld) rigidbody.AddForce(new Vector2(0f, jumpHoldForce), ForceMode2D.Impulse);
+            if (input.jumpHeld) rigidBody.AddForce(new Vector2(0f, jumpHoldForce), ForceMode2D.Impulse);
             if (jumpTime <= Time.time) isJumping = false;//ha pasado el tiempo para que no siga saltando
         }
-        if (rigidbody.velocity.y < maxFallSpeed) rigidbody.velocity = new Vector2(rigidbody.velocity.x, maxFallSpeed);//definimos el maximo de velocidad de caida
+        if (rigidBody.velocity.y < maxFallSpeed) rigidBody.velocity = new Vector2(rigidBody.velocity.x, maxFallSpeed);//definimos el maximo de velocidad de caida
     }
     void FlipCharacterDirection()
     {
@@ -118,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float xVelocity = speed * input.horizontal;
         if (xVelocity * direction < 0f) FlipCharacterDirection();// si la velocidad es negativa hace el flip
-        rigidbody.velocity = new Vector2(xVelocity, rigidbody.velocity.y);
+        rigidBody.velocity = new Vector2(xVelocity, rigidBody.velocity.y);
         if (isGround) coyoteTime = Time.time + coyoteDuration;// para que pueda saltar un poco mas aun estando en el aire
     }
 

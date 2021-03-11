@@ -6,6 +6,8 @@ using UnityEngine;
 [DefaultExecutionOrder(-100)]
 public class PlayerInput : MonoBehaviour
 {
+    public Joystick joystick;
+
     //HideInInspector para que aunque sean publicas pero no se muestren en el inspector
     [HideInInspector] public float horizontal;
     [HideInInspector] public bool jumpHeld;
@@ -18,7 +20,7 @@ public class PlayerInput : MonoBehaviour
     {
         ClearInput();
 
-        if (GameManager.IsGameOver() || GameManager.PlayerDied()) return;
+        if (GameManager.IsGameOver() || GameManager.PlayerDied() || GameManager.IsRespawn()) return;
 
         //Procesa las teclas
         ProcessInputs();
@@ -34,7 +36,7 @@ public class PlayerInput : MonoBehaviour
     }
     private void ProcessTouchInputs()
     {
-       //TODO ->
+        //TODO ->
     }
 
     private void ClearInput()

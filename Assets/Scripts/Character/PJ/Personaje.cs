@@ -15,6 +15,7 @@ public class Personaje : MonoBehaviour
 
     private bool hitting;
     private bool recovering;
+    private bool attacking;
     //private float horizMove = 0;
     //private float vertMove = 0;
     //public Joystick joystick;
@@ -35,13 +36,16 @@ public class Personaje : MonoBehaviour
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         recovering = stateInfo.IsName("PlayerRespawn");
         hitting = stateInfo.IsName("PJ_Hit");
+        attacking = stateInfo.IsName("PJ_Attack");
         CompruebaMuerto();
         if (recovering || hitting)
         {
             damage = false;
+            GameManager.RespawnTrue();
         }
         else
         {
+            GameManager.RespawnFalse();
             damage = true;
         }
     }
@@ -54,14 +58,16 @@ public class Personaje : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Enemy") && damage && !GameManager.PlayerDied())
         {
-            GameManager.PlayerHit();
-            animator.Play("PJ_Hit");
-            Invoke("Damage_again", timeDontDamage);
+            if (!attacking)
+            {
+                GameManager.PlayerHit();
+                animator.Play("PJ_Hit");
+                Invoke("Damage_again", timeDontDamage);
+            }
         }
     }
     private void CompruebaMuerto()
     {
-        Debug.Log(GameManager.PlayerDied());
         if (GameManager.PlayerDied())//si no tiene vidas y no está en el aire
         {
             Debug.Log("Entra en muerto");
@@ -72,5 +78,9 @@ public class Personaje : MonoBehaviour
     {
         animator.SetTrigger("Attack");
         //swordSource.Play();
+    }
+    public void restart()
+    {
+        GameManager.RestartScene();
     }
 }
