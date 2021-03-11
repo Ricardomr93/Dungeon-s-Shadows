@@ -9,6 +9,9 @@ TagManager:
   - DestroyPlayer
   - Attack
   - Potion
+  - Platform
+  - Bounds
+  - Lever
   layers:
   - Default
   - TransparentFX
