@@ -9,6 +9,7 @@ TagManager:
   - DestroyPlayer
   - Attack
   - Potion
+  - Key
   layers:
   - Default
   - TransparentFX
