@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Key : MonoBehaviour
+public class ItemMission : MonoBehaviour
 {
     public StartEnd startEnd;
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameManager.RegistrerItem(this);
     }
 
     // Update is called once per frame
@@ -21,7 +21,9 @@ public class Key : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             startEnd.End = true;
-            Destroy(gameObject, .5f);
+            GameManager.PlayerColletedItemMission(this);
+            gameObject.SetActive(false);
+            Destroy(gameObject, 1.5f);
         }
     }
 }

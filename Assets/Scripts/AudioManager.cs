@@ -8,33 +8,38 @@ public class AudioManager : MonoBehaviour
     static AudioManager current;
     // Start is called before the first frame update
 
-    //AudioCLips ambiente
+    [Header("Audio CLips ambiente")]
     public AudioClip ambientClip;
     public AudioClip musicClip;
     public AudioClip musicDeathClip;
+    public AudioClip deadShockClip;
 
-    //AudioClips Personaje
+    [Header("Audio Clips Personaje")]
     public AudioClip playerJumpClip;
     public AudioClip[] playerRunClips;
     public AudioClip playerRespawnClip;
     public AudioClip playerHitClip;
     public AudioClip playerDeathClip;
 
-    //AudioClips siting
+    [Header("Audio Clips siting")]
     public AudioClip groundDestroyClip;
     public AudioClip groundKickClip;
-    public AudioClip potionSitinClip;
     public AudioClip enemyKickClip;
     public AudioClip groundMoveClip;
 
-    //Mixer groups
+    [Header("Audio Clips items")]
+    public AudioClip potionitemClip;
+    public AudioClip keyitemClip;
+
+    [Header("Mixer groups")]
     public AudioMixerGroup ambientGroup;
     public AudioMixerGroup musicGroup;
     public AudioMixerGroup playerGroup;
+    public AudioMixerGroup itemGroup;
     public AudioMixerGroup sitingGroup;
 
 
-    AudioSource ambientSource, musicSource, playerSource, sitingSource;
+    AudioSource ambientSource, musicSource, playerSource, sitingSource,itemsSource;
 
     private void Awake()
     {
@@ -53,12 +58,15 @@ public class AudioManager : MonoBehaviour
         musicSource = gameObject.AddComponent<AudioSource>() as AudioSource;
         playerSource = gameObject.AddComponent<AudioSource>() as AudioSource;
         sitingSource = gameObject.AddComponent<AudioSource>() as AudioSource;
+        itemsSource = gameObject.AddComponent<AudioSource>() as AudioSource;
 
         //se asigna el respectivo audiosource a su mixer group
         ambientSource.outputAudioMixerGroup = ambientGroup;
         musicSource.outputAudioMixerGroup = musicGroup;
         sitingSource.outputAudioMixerGroup = sitingGroup;
         playerSource.outputAudioMixerGroup = playerGroup;
+        itemsSource.outputAudioMixerGroup = itemGroup;
+
 
         //llama al start
         StartLevelAudio();
@@ -74,6 +82,12 @@ public class AudioManager : MonoBehaviour
         musicSource.loop = true;
         musicSource.Play();
 
+    }
+    public static void PlayShockAudio()
+    {
+        if (current == null) return;
+        current.sitingSource.clip = current.deadShockClip;
+        current.sitingSource.Play();
     }
     public static void PlaySceneRestartAudio()
     {
@@ -120,12 +134,6 @@ public class AudioManager : MonoBehaviour
 
 
     //metodos siting
-    public static void PlayPotionCollectedAudio()
-    {
-        if (current == null) return;
-        current.sitingSource.clip = current.potionSitinClip;
-        current.sitingSource.Play();
-    }
     public static void PlayGroundKickAudio()
     {
         if (current == null) return;
@@ -156,4 +164,19 @@ public class AudioManager : MonoBehaviour
         if (current == null) return;
         current.ambientSource.Stop();
     }
+
+    //metodos items
+    public static void PlayKeyAudio()
+    {
+        if (current == null) return;
+        current.itemsSource.clip = current.keyitemClip;
+        current.itemsSource.Play();
+    }
+    public static void PlayPotionCollectedAudio()
+    {
+        if (current == null) return;
+        current.itemsSource.clip = current.potionitemClip;
+        current.itemsSource.Play();
+    }
+
 }

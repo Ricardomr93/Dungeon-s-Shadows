@@ -29,7 +29,6 @@ public class StartEnd : MonoBehaviour
             animGround.Play("HideGround");
             AudioManager.PlayGroundMove();
             start = true;
-            Invoke("Destroy", 6);
         }else if (start && end)
         {
             pjAnim.Play("UpStairs");
