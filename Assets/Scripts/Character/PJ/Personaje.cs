@@ -49,17 +49,45 @@ public class Personaje : MonoBehaviour
             damage = true;
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && damage)
+        {
+
+            Debug.Log("Entra OnTriggerEnter2D - attacking " + attacking);
+
+            if (!attacking)
+            {
+
+                Debug.Log("Entra OnTriggerEnter2D - PJ_Hit ");
+                GameManager.PlayerHit();
+                animator.Play("PJ_Hit");
+                Invoke("Damage_again", timeDontDamage);
+            }
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        
         if (collision.gameObject.CompareTag("Potion"))GameManager.PlayerUpLives();
         if (collision.gameObject.CompareTag("Respawn"))
         {
             AudioManager.PlayRespawnAudio();
         }
-        if (collision.gameObject.CompareTag("Enemy") && damage && !GameManager.PlayerDied())
+
+        Debug.Log("Entra OnTriggerEnter2D - PERSONAJE " + collision.gameObject.tag + " DAMAGE " + damage);
+
+        if (collision.gameObject.CompareTag("Enemy") && damage)
         {
+
+            Debug.Log("Entra OnTriggerEnter2D - attacking " + attacking);
+
             if (!attacking)
             {
+
+                Debug.Log("Entra OnTriggerEnter2D - PJ_Hit ");
                 GameManager.PlayerHit();
                 animator.Play("PJ_Hit");
                 Invoke("Damage_again", timeDontDamage);
@@ -70,7 +98,7 @@ public class Personaje : MonoBehaviour
     {
         if (GameManager.PlayerDied())//si no tiene vidas y no está en el aire
         {
-            Debug.Log("Entra en muerto");
+            //Debug.Log("Entra en muerto");
             animator.Play("PJ_Dead");
         }
     }
