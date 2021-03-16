@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyAttacked : MonoBehaviour
 {
+    public float destroyDelay = 3.0f;
+
     public Animator animator;
     // Start is called before the first frame update
     void Start()
@@ -15,7 +17,7 @@ public class EnemyAttacked : MonoBehaviour
         {
             AudioManager.PlayEnemyKick();
             animator.Play("Dead");
-            Invoke("Destroy_Enemy", 3.0f);
+            Invoke("Destroy_Enemy", destroyDelay);
         }
     }
     private void Destroy_Enemy()
