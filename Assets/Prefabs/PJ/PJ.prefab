@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 7998302997733998175}
   - component: {fileID: 7998302997733998171}
   - component: {fileID: 5334640186922352406}
-  - component: {fileID: 7712778779190334611}
-  - component: {fileID: 7712778779190334608}
+  - component: {fileID: 2107563597638814671}
+  - component: {fileID: 2107563597638814668}
   - component: {fileID: 7998302997733998170}
   m_Layer: 0
   m_Name: PJ
@@ -155,7 +155,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7712778779190334611
+--- !u!114 &2107563597638814671
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,7 +183,7 @@ MonoBehaviour:
   isGround: 0
   isJumping: 0
   isHeadBlocked: 0
---- !u!114 &7712778779190334608
+--- !u!114 &2107563597638814668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 7998302998284297404}
   - component: {fileID: 7998302998284297402}
   - component: {fileID: 7998302998284297403}
-  - component: {fileID: 7712778779772489343}
+  - component: {fileID: 2107563597080252707}
   m_Layer: 0
   m_Name: pj
   m_TagString: Untagged
@@ -317,7 +317,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7712778779772489343
+--- !u!114 &2107563597080252707
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
