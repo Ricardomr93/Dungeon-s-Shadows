@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Text vidasTxt;
+    //public Text vidasTxt;
     static GameManager current;
     private int lives;
     private bool gameOver;
@@ -16,9 +16,26 @@ public class GameManager : MonoBehaviour
     public StartEnd startEnd;
     //SceneFader sceneFader; TODO->
 
-    private void Awake()
+    public void Play()
     {
+        GameManager.PlayerNextScene();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
 
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameObject.Find("GameOver").GetComponentInChildren<Text>().text = "";
+        Awake();
+    }
+
+    private void Awake()
+    {   
         if (current != null && current != this)
         {
             Destroy(gameObject);
@@ -30,7 +47,7 @@ public class GameManager : MonoBehaviour
         current = this;
         items = new List<ItemMission>();
         DontDestroyOnLoad(gameObject);
-        current.vidasTxt.text = "x " + current.lives;
+        GameObject.Find("Text").GetComponentInChildren<Text>().text = "x " + current.lives;
     }
     private void Update()
     {
@@ -69,7 +86,11 @@ public class GameManager : MonoBehaviour
         //si no está en la lista no hace nada
         if (!current.items.Contains(item)) return;
         current.items.Remove(item);
-        if (item.CompareTag("Key"))
+        if (item.CompareTag("Key")) 
+        {
+            AudioManager.PlayKeyAudio();
+        }
+        if (item.CompareTag("Lever"))
         {
             AudioManager.PlayKeyAudio();
         }
@@ -83,12 +104,16 @@ public class GameManager : MonoBehaviour
     public static void PlayerHit()
     {
         if (current == null) return;
-        current.lives--;
-        current.vidasTxt.text = "x " + current.lives;
-        AudioManager.PlayHitAudio();
-        PlayerDied();
-        
-        //UImanager.UpdateLivesUI(current.lives); ->
+        if(0 < current.lives)
+        {
+            current.lives--;
+            //current.vidasTxt.text = "x " + current.lives;
+            GameObject.Find("Text").GetComponentInChildren<Text>().text = "x " + current.lives;
+            AudioManager.PlayHitAudio();
+            PlayerDied();
+
+            //UImanager.UpdateLivesUI(current.lives); ->
+        }
     }
     public static void PlayerUpLives()
     {
@@ -100,11 +125,13 @@ public class GameManager : MonoBehaviour
         if (current == null) return false;
         if (current.lives <= 0 && !current.dead)
         {
+            Debug.Log("current.lives " + current.lives + " - current.dead " + current.dead);
             current.dead = true;
             //TODO -> implementar metodo para enseñar pantalla muerte etc...
         }
         return current.dead;
     }
+
     public static void RestartScene()
     {
         current.items.Clear();

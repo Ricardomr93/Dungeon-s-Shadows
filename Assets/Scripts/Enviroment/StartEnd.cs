@@ -17,7 +17,7 @@ public class StartEnd : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log("Star " + start + " End " + end);
+        //Debug.Log("Star " + start + " End " + end);
     }
     // Start is called before the first frame update
     void Start()

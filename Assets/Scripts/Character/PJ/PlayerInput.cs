@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 
 //indicamos que este script debe ejecutarse el primero
@@ -7,6 +8,7 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     public Joystick joystick;
+    public bool plataformaAndroid;
 
     //HideInInspector para que aunque sean publicas pero no se muestren en el inspector
     [HideInInspector] public float horizontal;
@@ -53,13 +55,26 @@ public class PlayerInput : MonoBehaviour
     }
     private void ProcessInputs()
     {
-        //acumular horizontal axis inputn
-        horizontal += Input.GetAxis("Horizontal");
 
-        //Acumular botones input para no perder entre fotogramas la pulsacion
-        jumPressed = jumPressed || Input.GetButtonDown("Jump");
-        jumpHeld = jumpHeld || Input.GetButtonDown("Jump");
-        attackPressed = attackPressed || Input.GetButtonDown("Fire1");
+        if (plataformaAndroid)
+        {
+            //acumular horizontal axis inputn
+            horizontal += CrossPlatformInputManager.GetAxis("Horizontal");
 
+            //Acumular botones input para no perder entre fotogramas la pulsacion
+            jumPressed = jumPressed || CrossPlatformInputManager.GetButtonDown("Jump");
+            jumpHeld = jumpHeld || CrossPlatformInputManager.GetButtonDown("Jump");
+            attackPressed = attackPressed || CrossPlatformInputManager.GetButtonDown("Fire1");
+
+        } else
+        {
+            //acumular horizontal axis inputn
+            horizontal += Input.GetAxis("Horizontal");
+
+            //Acumular botones input para no perder entre fotogramas la pulsacion
+            jumPressed = jumPressed || Input.GetButtonDown("Jump");
+            jumpHeld = jumpHeld || Input.GetButtonDown("Jump");
+            attackPressed = attackPressed || Input.GetButtonDown("Fire1");
+        }
     }
 }
