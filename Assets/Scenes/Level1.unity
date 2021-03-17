@@ -36612,21 +36612,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2107563597638814668, guid: f2f8fa385fb83534ba4032b1316f6e45,
-        type: 3}
-      propertyPath: plataformaAndroid
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7712778779190334611, guid: f2f8fa385fb83534ba4032b1316f6e45,
-        type: 3}
-      propertyPath: isJumping
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7712778779190334611, guid: f2f8fa385fb83534ba4032b1316f6e45,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7998302997733998160, guid: f2f8fa385fb83534ba4032b1316f6e45,
         type: 3}
       propertyPath: m_Name

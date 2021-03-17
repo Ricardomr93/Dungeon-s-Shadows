@@ -83,6 +83,12 @@ public class AudioManager : MonoBehaviour
         musicSource.Play();
 
     }
+
+    public static void RestartAudio()
+    {
+        current.StartLevelAudio();
+    }
+
     public static void PlayShockAudio()
     {
         if (current == null) return;

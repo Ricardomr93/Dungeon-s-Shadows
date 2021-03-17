@@ -115,6 +115,8 @@ public class Personaje : MonoBehaviour
             GameObject.Find("GameOver").GetComponentInChildren<Text>().text = "Game Over";
             restartButton.SetActive(true);
             exitButton.SetActive(true);
+
+            Destroy(gameObject);
         }
     }
     public void Attack()

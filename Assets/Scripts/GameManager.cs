@@ -16,15 +16,16 @@ public class GameManager : MonoBehaviour
     public StartEnd startEnd;
     //SceneFader sceneFader; TODO->
 
-    public void Play()
-    {
-        GameManager.PlayerNextScene();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-
     public void Exit()
     {
         Application.Quit();
+    }
+
+    public void MenuButton()
+    {
+        Restart();
+        AudioManager.RestartAudio();
+        SceneManager.LoadScene("MainScene");
     }
 
     public void Restart()
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         GameObject.Find("GameOver").GetComponentInChildren<Text>().text = "";
         Awake();
+        AudioManager.RestartAudio();
     }
 
     private void Awake()
@@ -119,6 +121,7 @@ public class GameManager : MonoBehaviour
     {
         if (current == null) return;
         current.lives++;
+        GameObject.Find("Text").GetComponentInChildren<Text>().text = "x " + current.lives;
     }
     public static bool PlayerDied()
     {

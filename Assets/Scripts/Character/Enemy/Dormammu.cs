@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Dormammu : MonoBehaviour
 {
@@ -69,6 +70,8 @@ public class Dormammu : MonoBehaviour
     private void Destroy_Enemy()
     {
         Destroy(gameObject, .4f);
+
+        SceneManager.LoadScene("CreditScene");
     }
 
 }
