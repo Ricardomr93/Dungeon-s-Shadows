@@ -6,31 +6,56 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Text vidasTxt;
+    //public Text vidasTxt;
     static GameManager current;
-    private int lives;
+    //private static int lives;
     private bool gameOver;
-    private bool dead;
+    private static bool dead;
     private bool respawn;
     private List<ItemMission> items;
     public StartEnd startEnd;
     //SceneFader sceneFader; TODO->
 
-    private void Awake()
+    public void Exit()
     {
+        Application.Quit();
+    }
 
+    public void MenuButton()
+    {
+        Restart();
+        AudioManager.RestartAudio();
+        SceneManager.LoadScene("MainScene");
+    }
+
+    public void Restart()
+    {
+        Debug.Log("Restart");
+        AudioManager.RestartAudio();
+        GameLives.lives = 3;
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "";
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "x " + GameLives.lives;
+        dead = false;
+
+        AudioManager.PlayEnemyKick();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+    }
+
+    private void Awake()
+    {   
         if (current != null && current != this)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
             return;
         }
-        lives = 3;
+        
         dead = false;
         Debug.Log(dead);
         current = this;
         items = new List<ItemMission>();
-        DontDestroyOnLoad(gameObject);
-        current.vidasTxt.text = "x " + current.lives;
+        //DontDestroyOnLoad(gameObject);
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "";
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "x " + GameLives.lives;
     }
     private void Update()
     {
@@ -38,8 +63,8 @@ public class GameManager : MonoBehaviour
     }
     public static bool IsDead()
     {
-        if (current == null) return false;
-        return current.dead;
+        //if (current == null) return false;
+        return dead;
     }
     public static bool IsGameOver()
     {
@@ -69,7 +94,11 @@ public class GameManager : MonoBehaviour
         //si no está en la lista no hace nada
         if (!current.items.Contains(item)) return;
         current.items.Remove(item);
-        if (item.CompareTag("Key"))
+        if (item.CompareTag("Key")) 
+        {
+            AudioManager.PlayKeyAudio();
+        }
+        if (item.CompareTag("Lever"))
         {
             AudioManager.PlayKeyAudio();
         }
@@ -83,28 +112,38 @@ public class GameManager : MonoBehaviour
     public static void PlayerHit()
     {
         if (current == null) return;
-        current.lives--;
-        current.vidasTxt.text = "x " + current.lives;
-        AudioManager.PlayHitAudio();
-        PlayerDied();
-        
-        //UImanager.UpdateLivesUI(current.lives); ->
+        if(0 < GameLives.lives)
+        {
+            GameLives.lives--;
+            //current.vidasTxt.text = "x " + current.lives;
+            GameObject.Find("Lives").GetComponentInChildren<Text>().text = "";
+            GameObject.Find("Lives").GetComponentInChildren<Text>().text = "x " + GameLives.lives;
+            AudioManager.PlayHitAudio();
+            PlayerDied();
+
+            //UImanager.UpdateLivesUI(current.lives); ->
+        }
     }
+
     public static void PlayerUpLives()
     {
         if (current == null) return;
-        current.lives++;
+        GameLives.lives++;
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "";
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "x " + GameLives.lives;
     }
     public static bool PlayerDied()
     {
         if (current == null) return false;
-        if (current.lives <= 0 && !current.dead)
+        if (GameLives.lives <= 0 && !dead)
         {
-            current.dead = true;
+            Debug.Log("current.lives " + GameLives.lives + " - current.dead " + dead);
+            dead = true;
             //TODO -> implementar metodo para enseñar pantalla muerte etc...
         }
-        return current.dead;
+        return dead;
     }
+
     public static void RestartScene()
     {
         current.items.Clear();

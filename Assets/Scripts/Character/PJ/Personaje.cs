@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Personaje : MonoBehaviour
 {
     //atributos propios del pj
     private bool damage;
+
+    public GameObject gameOverTxt;
+    public GameObject restartButton;
+    public GameObject exitButton;
 
     public bool Damage
     {
@@ -23,9 +28,17 @@ public class Personaje : MonoBehaviour
     public Collider2D[] attackCol;
     public float timeDontDamage = 1.3f;
     // Start is called before the first frame update
+
+    private bool reproducirMuerte = false;
+
     void Start()
     {
         Damage = true;
+
+        Debug.Log("NO LO MOSTRAMOS");
+        GameObject.Find("GameOver").GetComponentInChildren<Text>().text = "";
+        restartButton.SetActive(false);
+        exitButton.SetActive(false);
     }
 
     // Update is called once per frame
@@ -37,7 +50,9 @@ public class Personaje : MonoBehaviour
         recovering = stateInfo.IsName("PlayerRespawn");
         hitting = stateInfo.IsName("PJ_Hit");
         attacking = stateInfo.IsName("PJ_Attack");
-        CompruebaMuerto();
+        if(!reproducirMuerte)
+            CompruebaMuerto();
+
         if (recovering || hitting)
         {
             damage = false;
@@ -77,17 +92,17 @@ public class Personaje : MonoBehaviour
             AudioManager.PlayRespawnAudio();
         }
 
-        Debug.Log("Entra OnTriggerEnter2D - PERSONAJE " + collision.gameObject.tag + " DAMAGE " + damage);
+        //Debug.Log("Entra OnTriggerEnter2D - PERSONAJE " + collision.gameObject.tag + " DAMAGE " + damage);
 
         if (collision.gameObject.CompareTag("Enemy") && damage)
         {
 
-            Debug.Log("Entra OnTriggerEnter2D - attacking " + attacking);
+            //Debug.Log("Entra OnTriggerEnter2D - attacking " + attacking);
 
-            if (!attacking)
+            if (!attacking && !reproducirMuerte)
             {
 
-                Debug.Log("Entra OnTriggerEnter2D - PJ_Hit ");
+                //Debug.Log("Entra OnTriggerEnter2D - PJ_Hit ");
                 GameManager.PlayerHit();
                 animator.Play("PJ_Hit");
                 Invoke("Damage_again", timeDontDamage);
@@ -98,8 +113,14 @@ public class Personaje : MonoBehaviour
     {
         if (GameManager.PlayerDied())//si no tiene vidas y no está en el aire
         {
-            //Debug.Log("Entra en muerto");
+            Debug.Log("Entra en muerto");
             animator.Play("PJ_Dead");
+
+            GameObject.Find("GameOver").GetComponentInChildren<Text>().text = "Game Over";
+            restartButton.SetActive(true);
+            exitButton.SetActive(true);
+
+            reproducirMuerte = true;
         }
     }
     public void Attack()

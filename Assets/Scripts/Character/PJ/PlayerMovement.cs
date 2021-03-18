@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         }
         
     }
-    private void AirMovement()
+    public void AirMovement()
     {
         if (input.jumPressed && !isJumping && (isGround || coyoteTime > Time.time))
         {

@@ -23,7 +23,7 @@ public class WallBroke : MonoBehaviour
                 AudioManager.PlayGroundDestroyAudio();
                 wallAnim.Play("Destroy");
                 GetComponent<Collider2D>().enabled = false;
-                Destroy(gameObject,wallAnim.GetCurrentAnimatorStateInfo(0).length);
+                Destroy(gameObject, wallAnim.GetCurrentAnimatorStateInfo(0).length);
             }
         }
     }

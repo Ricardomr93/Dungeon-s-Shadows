@@ -1,0 +1,34 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class WallBrokeEnd : MonoBehaviour
+{
+    public StartEnd startend;
+    // Start is called before the first frame update
+    public Animator wallAnim;
+    public int numKick = 3;
+    // Update is called once per frame
+    void Update()
+    {
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (startend.End)
+        {
+            if (collision.gameObject.CompareTag("Attack"))
+            {
+                wallAnim.Play("WallBroken");
+                AudioManager.PlayGroundKickAudio();
+                numKick--;
+                if (numKick <= 0)
+                {
+                    AudioManager.PlayGroundDestroyAudio();
+                    wallAnim.Play("Destroy");
+                    GetComponent<Collider2D>().enabled = false;
+                    Destroy(gameObject, wallAnim.GetCurrentAnimatorStateInfo(0).length);
+                }
+            }
+        }
+    }
+}
