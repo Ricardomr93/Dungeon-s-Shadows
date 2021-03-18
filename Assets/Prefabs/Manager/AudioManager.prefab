@@ -59,6 +59,9 @@ MonoBehaviour:
   groundKickClip: {fileID: 8300000, guid: a077334af73801b4e9da2c9117a2be0d, type: 3}
   enemyKickClip: {fileID: 8300000, guid: 9e4250317c01ceb429e3b54f50448f7a, type: 3}
   groundMoveClip: {fileID: 8300000, guid: a967b3bb6b2ab5e4496805abc4eacf8d, type: 3}
+  finalEnemyDead: {fileID: 8300000, guid: 2008390cae56f4244953ca9e5a523f1e, type: 3}
+  finalEnemyAttack: {fileID: 8300000, guid: 42e11a044c15fd745aaca8f2f06b5ee0, type: 3}
+  finalEnemyFly: {fileID: 8300000, guid: d3e6de447950d6b43851b3c900a648d3, type: 3}
   potionitemClip: {fileID: 8300000, guid: 3f5e7cf2b56494a95afab516ee02b46c, type: 3}
   keyitemClip: {fileID: 8300000, guid: c2dade153431323449798d5d5fd92ee4, type: 3}
   ambientGroup: {fileID: 7900956422004361214, guid: 9e2a4d3de5fec984b8ff9735c663aa8c,
