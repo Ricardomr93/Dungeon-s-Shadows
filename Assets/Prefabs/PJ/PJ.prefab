@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joystick: {fileID: 0}
-  plataformaAndroid: 0
+  plataformaAndroid: 1
   horizontal: 0
   jumpHeld: 0
   jumPressed: 0
