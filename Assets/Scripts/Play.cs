@@ -7,6 +7,7 @@ public class Play : MonoBehaviour
 {
     public void PlayButton()
     {
+        AudioManager.PlayEnemyKick();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

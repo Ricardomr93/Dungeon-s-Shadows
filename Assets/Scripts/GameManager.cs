@@ -8,9 +8,9 @@ public class GameManager : MonoBehaviour
 {
     //public Text vidasTxt;
     static GameManager current;
-    private int lives;
+    //private static int lives;
     private bool gameOver;
-    private bool dead;
+    private static bool dead;
     private bool respawn;
     private List<ItemMission> items;
     public StartEnd startEnd;
@@ -30,26 +30,32 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        GameObject.Find("GameOver").GetComponentInChildren<Text>().text = "";
-        Awake();
+        Debug.Log("Restart");
         AudioManager.RestartAudio();
+        GameLives.lives = 3;
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "";
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "x " + GameLives.lives;
+        dead = false;
+
+        AudioManager.PlayEnemyKick();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
     private void Awake()
     {   
         if (current != null && current != this)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
             return;
         }
-        lives = 3;
+        
         dead = false;
         Debug.Log(dead);
         current = this;
         items = new List<ItemMission>();
-        DontDestroyOnLoad(gameObject);
-        GameObject.Find("Text").GetComponentInChildren<Text>().text = "x " + current.lives;
+        //DontDestroyOnLoad(gameObject);
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "";
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "x " + GameLives.lives;
     }
     private void Update()
     {
@@ -57,8 +63,8 @@ public class GameManager : MonoBehaviour
     }
     public static bool IsDead()
     {
-        if (current == null) return false;
-        return current.dead;
+        //if (current == null) return false;
+        return dead;
     }
     public static bool IsGameOver()
     {
@@ -106,33 +112,36 @@ public class GameManager : MonoBehaviour
     public static void PlayerHit()
     {
         if (current == null) return;
-        if(0 < current.lives)
+        if(0 < GameLives.lives)
         {
-            current.lives--;
+            GameLives.lives--;
             //current.vidasTxt.text = "x " + current.lives;
-            GameObject.Find("Text").GetComponentInChildren<Text>().text = "x " + current.lives;
+            GameObject.Find("Lives").GetComponentInChildren<Text>().text = "";
+            GameObject.Find("Lives").GetComponentInChildren<Text>().text = "x " + GameLives.lives;
             AudioManager.PlayHitAudio();
             PlayerDied();
 
             //UImanager.UpdateLivesUI(current.lives); ->
         }
     }
+
     public static void PlayerUpLives()
     {
         if (current == null) return;
-        current.lives++;
-        GameObject.Find("Text").GetComponentInChildren<Text>().text = "x " + current.lives;
+        GameLives.lives++;
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "";
+        GameObject.Find("Lives").GetComponentInChildren<Text>().text = "x " + GameLives.lives;
     }
     public static bool PlayerDied()
     {
         if (current == null) return false;
-        if (current.lives <= 0 && !current.dead)
+        if (GameLives.lives <= 0 && !dead)
         {
-            Debug.Log("current.lives " + current.lives + " - current.dead " + current.dead);
-            current.dead = true;
+            Debug.Log("current.lives " + GameLives.lives + " - current.dead " + dead);
+            dead = true;
             //TODO -> implementar metodo para enseñar pantalla muerte etc...
         }
-        return current.dead;
+        return dead;
     }
 
     public static void RestartScene()

@@ -415,7 +415,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47228687}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000000029802322, y: -0.21, z: -10}
+  m_LocalPosition: {x: 0.24999997, y: -0.283, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1236,12 +1236,12 @@ PrefabInstance:
     - target: {fileID: 7998302997733998172, guid: f2f8fa385fb83534ba4032b1316f6e45,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7998302997733998172, guid: f2f8fa385fb83534ba4032b1316f6e45,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.21
+      value: -0.283
       objectReference: {fileID: 0}
     - target: {fileID: 7998302997733998172, guid: f2f8fa385fb83534ba4032b1316f6e45,
         type: 3}
@@ -6263,6 +6263,7 @@ GameObject:
   - component: {fileID: 938294447}
   - component: {fileID: 938294446}
   - component: {fileID: 938294445}
+  - component: {fileID: 938294451}
   - component: {fileID: 938294450}
   m_Layer: 0
   m_Name: WallEnd
@@ -11418,10 +11419,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 938294443}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52ed2ed83620fd9458ff0626b8fd140f, type: 3}
+  m_Script: {fileID: 11500000, guid: 14375f8690d26a34dbf881bc916f1338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   startend: {fileID: 958915736}
+  wallAnim: {fileID: 938294451}
+  numKick: 3
+--- !u!95 &938294451
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938294443}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4cd80f471643830479b760727dcc09aa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &947061821 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6282577588953018295, guid: 7020d068dd7e06748a9639b8b764b5ec,
@@ -11545,7 +11567,7 @@ PrefabInstance:
         type: 3}
       propertyPath: PJ
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1987630209}
     - target: {fileID: 6947257814161391410, guid: a9d5cf92378937444acc7a8c0c4acb05,
         type: 3}
       propertyPath: pjScripit
@@ -11555,7 +11577,7 @@ PrefabInstance:
         type: 3}
       propertyPath: pjanimator
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1031820584}
     - target: {fileID: 6947257814161391410, guid: a9d5cf92378937444acc7a8c0c4acb05,
         type: 3}
       propertyPath: positionRespawn
@@ -11630,6 +11652,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1990050868224815096, guid: ee540482b4007f04f9733b3cb88c2d99,
+        type: 3}
+      propertyPath: musicClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6cb140c5ef7609049a3c017e0f4b7266, type: 3}
     - target: {fileID: 8991255185156494107, guid: ee540482b4007f04f9733b3cb88c2d99,
         type: 3}
       propertyPath: m_RootOrder
@@ -38361,7 +38388,7 @@ PrefabInstance:
         type: 3}
       propertyPath: PJ
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1987630209}
     - target: {fileID: 6947257814161391410, guid: a9d5cf92378937444acc7a8c0c4acb05,
         type: 3}
       propertyPath: pjScripit
@@ -38371,7 +38398,7 @@ PrefabInstance:
         type: 3}
       propertyPath: pjanimator
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1031820584}
     - target: {fileID: 6947257814161391410, guid: a9d5cf92378937444acc7a8c0c4acb05,
         type: 3}
       propertyPath: positionRespawn
@@ -39884,7 +39911,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965305915}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000000029802322, y: -0.21, z: -10}
+  m_LocalPosition: {x: 0.24999997, y: -0.283, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 492054664}
@@ -40039,7 +40066,7 @@ PrefabInstance:
         type: 3}
       propertyPath: PJ
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1987630209}
     - target: {fileID: 6947257814161391410, guid: a9d5cf92378937444acc7a8c0c4acb05,
         type: 3}
       propertyPath: pjScripit
@@ -40049,7 +40076,7 @@ PrefabInstance:
         type: 3}
       propertyPath: pjanimator
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1031820584}
     - target: {fileID: 6947257814161391410, guid: a9d5cf92378937444acc7a8c0c4acb05,
         type: 3}
       propertyPath: positionRespawn

@@ -28,6 +28,9 @@ public class Personaje : MonoBehaviour
     public Collider2D[] attackCol;
     public float timeDontDamage = 1.3f;
     // Start is called before the first frame update
+
+    private bool reproducirMuerte = false;
+
     void Start()
     {
         Damage = true;
@@ -47,7 +50,8 @@ public class Personaje : MonoBehaviour
         recovering = stateInfo.IsName("PlayerRespawn");
         hitting = stateInfo.IsName("PJ_Hit");
         attacking = stateInfo.IsName("PJ_Attack");
-        CompruebaMuerto();
+        if(!reproducirMuerte)
+            CompruebaMuerto();
 
         if (recovering || hitting)
         {
@@ -95,7 +99,7 @@ public class Personaje : MonoBehaviour
 
             //Debug.Log("Entra OnTriggerEnter2D - attacking " + attacking);
 
-            if (!attacking)
+            if (!attacking && !reproducirMuerte)
             {
 
                 //Debug.Log("Entra OnTriggerEnter2D - PJ_Hit ");
@@ -116,7 +120,7 @@ public class Personaje : MonoBehaviour
             restartButton.SetActive(true);
             exitButton.SetActive(true);
 
-            Destroy(gameObject);
+            reproducirMuerte = true;
         }
     }
     public void Attack()

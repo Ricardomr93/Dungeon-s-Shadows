@@ -26,6 +26,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip groundKickClip;
     public AudioClip enemyKickClip;
     public AudioClip groundMoveClip;
+    public AudioClip finalEnemyDead;
+    public AudioClip finalEnemyAttack;
+    public AudioClip finalEnemyFly;
 
     [Header("Audio Clips items")]
     public AudioClip potionitemClip;
@@ -46,12 +49,12 @@ public class AudioManager : MonoBehaviour
         //Si el audioManager existe y no es este
         if (current != null && current != this)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
             return;
         }
         //este es el audioManager y deberia persistir entre escenas
         current = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         //Inciar canales que se ejecutan simultaneamente cuando se conecta el juego
         ambientSource = gameObject.AddComponent<AudioSource>() as AudioSource;
@@ -164,6 +167,25 @@ public class AudioManager : MonoBehaviour
         current.sitingSource.clip = current.groundMoveClip;
         current.sitingSource.Play();
     }
+    public static void PlayFinalEnemyDead()
+    {
+        if (current == null) return;
+        current.sitingSource.clip = current.finalEnemyDead;
+        current.sitingSource.Play();
+    }
+    public static void PlayFinalEnemyAttack()
+    {
+        if (current == null) return;
+        current.sitingSource.clip = current.finalEnemyAttack;
+        current.sitingSource.Play();
+    }
+    public static void PlayFinalEnemyFly()
+    {
+        if (current == null) return;
+        current.sitingSource.clip = current.finalEnemyFly;
+        current.sitingSource.Play();
+    }
+
     //metodos condicion
     public static void PlayWonAudio()
     {

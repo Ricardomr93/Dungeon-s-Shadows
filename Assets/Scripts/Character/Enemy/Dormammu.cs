@@ -12,6 +12,9 @@ public class Dormammu : MonoBehaviour
     private int damage = 0;
     private bool hitting;
     private bool hit;
+    private bool deadEnemy = false;
+    public static bool sound = false;
+
 
     public bool Dead
     {
@@ -40,9 +43,16 @@ public class Dormammu : MonoBehaviour
             hit = true;
         }
 
-        if (waitTime <= 0 && !dead)
+        if (waitTime <= 0 && !dead && !deadEnemy)
         {
             waitTime = waitTimeToAttack;
+
+            Debug.Log("Dormammu.sound " + sound);
+            if (sound)
+            {
+                AudioManager.PlayFinalEnemyAttack();
+            }
+                
             anim.Play("FinalEnemy-Attack");
         }
         else
@@ -57,21 +67,32 @@ public class Dormammu : MonoBehaviour
         {
             AudioManager.PlayEnemyKick();
 
-            damage++;
-            anim.Play("Dead");
+            if (damage < 4)
+            {
+                damage++;
+                anim.Play("Dead");
 
-            if (damage == 4)
-            {    
-                Invoke("Destroy_Enemy", 2.0f);
-                damage = 0;
+                if (damage == 4)
+                {
+                    deadEnemy = true;
+                    damage = 0;
+                    Invoke("Destroy_Enemy", 1.0f);
+                }
             }
         }
     }
     private void Destroy_Enemy()
     {
-        Destroy(gameObject, .4f);
-
-        SceneManager.LoadScene("CreditScene");
+        //Destroy(gameObject, .4f);
+        AudioManager.PlayFinalEnemyDead();
+        anim.Play("FireDead");
+        sound = false;
+        Invoke("LoadingCredit", 5.0f);
     }
 
+
+    private void LoadingCredit()
+    {
+        SceneManager.LoadScene("CreditScene");
+    }
 }
